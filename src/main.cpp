@@ -9,6 +9,20 @@
 #define SPEED_LIMIT 0.6
 #define ACCEL_DECEL_distance 37.4
 
+void Stop();
+void Rotate(float angle, int direction);
+void RotateTwoWheels(float angle);
+double Compute(double kp, double ki);
+void Forward(float distance);
+void Dece(float currentSpeed);
+void Acce(float desiredSpeed);
+
+float CalculArc(float angle);
+float DistanceToPulse(float distance);
+float PulseToDistance (float pulse);
+
+
+
 //Description: La fonction calcul l'arc tracé lorsqu'une seule roue tourne
 //Précondition: L'angle (réel) doit être compris entre 0 et 180 degs
 //Postcondition: La fonction retourne un arc de cercle (réel) en cm
