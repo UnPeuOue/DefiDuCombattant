@@ -107,14 +107,21 @@ void RotateTwoWheels(float angle)
 //Description: La fonction corrige la trajectoire avancer
 //Précondition: Les constantes kp et ki (réels) et lastTime
 //Précondition: 
-double Compute(double kp, double ki)
+
+
+double Compute(double kp, double ki,double sp , double pv,double *lastime, double *errsum)
 {  
-    int32_t wheelOne = ENCODER_Read(0);
-    int32_t wheelTwo = ENCODER_Read(1);
-    int32_t errorRange = abs(wheelOne) - abs(wheelTwo);
+    int sampletime = 50; 
+    unsigned long now = millis();
+    int timechange = now-*lastime;
+    if (timechange>= sampletime) 
+    {
+    double error = sp-pv;
+    *errsum+= error;
     double output = 0;
-    output = (kp * errorRange) + ki;
+    output = (kp * error) + (ki* *errsum);
     return output;
+    }
 }
 
 //Description: La fonction fait avancer le robot
