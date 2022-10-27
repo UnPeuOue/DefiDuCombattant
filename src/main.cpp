@@ -2,6 +2,7 @@
 #include "sensors.h"
 #include "movements.h"
 
+double Compute(double kp, double ki,double sp , double pv,double *lastime, double *errsum);
 
 int ledPin = 13;  // LED connected to digital pin 13
 int inPin = 7;    // pushbutton connected to digital pin 7
@@ -18,14 +19,52 @@ void setup() {
 void loop() {
   
   double value = 0;
-  if (ROBUS_IsBumper(3)) {
+  if (ROBUS_IsBumper(1)) {
   
   val = digitalRead(inPin);   // read the input pin
   digitalWrite(ledPin, val);  // sets the LED to the button's value
   Serial.println(val);
-
+  }
   
+
+  if (ROBUS_IsBumper(3)) {
+  double kp = 0.000;
+  double ki = 0.005;
+  
+  double lastime = 0;
+  double errsum = 0;
+  while (1)
+  {
+    
+    double sp = ENCODER_Read(0);
+  double pv = ENCODER_Read(1);
+  MOTOR_SetSpeed(0, 0.5);
+  MOTOR_SetSpeed(1, 0.5+Compute(kp, ki, sp, pv, &lastime ,&errsum));
+  Serial.println("lastime : ");
+  Serial.println(lastime);
+  Serial.println("errsum : ");
+  Serial.println(errsum);
+
   
   }
+  }
 
+}
+
+double Compute(double kp, double ki,double sp , double pv,double *lastime, double *errsum)
+{  
+    int sampletime = 50; 
+    unsigned long now = millis();
+    int timechange = now-*lastime;
+    if (timechange>= sampletime) 
+    {
+    double error = sp-pv;
+    *errsum+= error;
+    double output = 0;
+    output = (kp * error) + (ki* *errsum);
+    Serial.println("output : ");
+    Serial.println(output);
+    return output;
+    }
+    return 0;
 }
