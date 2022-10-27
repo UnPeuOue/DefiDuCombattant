@@ -4,6 +4,7 @@
 //Libraries
 #include <Arduino.h>
 #include <librobus.h>
+#include <Adafruit_TCS34725.h>
 
 
 //Constants
