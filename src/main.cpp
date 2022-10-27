@@ -28,7 +28,7 @@ void loop() {
   
 
   if (ROBUS_IsBumper(3)) {
-  double kp = 0.000;
+  double kp = 0.005;
   double ki = 0.005;
   
   double lastime = 0;
@@ -39,12 +39,16 @@ void loop() {
     double sp = ENCODER_Read(0);
   double pv = ENCODER_Read(1);
   MOTOR_SetSpeed(0, 0.5);
+  
   MOTOR_SetSpeed(1, 0.5+Compute(kp, ki, sp, pv, &lastime ,&errsum));
   Serial.println("lastime : ");
   Serial.println(lastime);
   Serial.println("errsum : ");
   Serial.println(errsum);
-
+  if (errsum>1000)
+  {
+    errsum=0;
+  }
   
   }
   }
@@ -53,7 +57,7 @@ void loop() {
 
 double Compute(double kp, double ki,double sp , double pv,double *lastime, double *errsum)
 {  
-    int sampletime = 50; 
+    int sampletime = 100; 
     unsigned long now = millis();
     int timechange = now-*lastime;
     if (timechange>= sampletime) 
@@ -62,6 +66,7 @@ double Compute(double kp, double ki,double sp , double pv,double *lastime, doubl
     *errsum+= error;
     double output = 0;
     output = (kp * error) + (ki* *errsum);
+    *lastime = now;
     Serial.println("output : ");
     Serial.println(output);
     return output;
