@@ -33,28 +33,38 @@ void ReadColorSensor(float* pointerRed, float* pointerGreen, float* pointerBlue)
 
 }
 
+
+
 void PrintColor(float r, float g, float b)
 {
 
     if (r>(2.5*b) && r>(2.5*g))
     {
+        TurnOffLights();
+        digitalWrite(13, HIGH);
         Serial.println("Rouge\n");
         delay(500);
     }
   
     if (r>(2.5*b) && r<(2.5*g))
     {
+        TurnOffLights();
+        digitalWrite(12, HIGH);
         Serial.println("Jaune\n");
         delay(500);
     }
   
     if (g>r && g>b)
     {
+        TurnOffLights();
+        digitalWrite(10, HIGH);
         Serial.println("Vert\n");
         delay(500);
     }
     if (b>r && b>g)
     {
+        TurnOffLights();
+        digitalWrite(11, HIGH);
         Serial.println("Bleu\n");
         delay(500);
     }
@@ -139,4 +149,12 @@ void LineDetector ()
     k=-1;
     j=-1;
   }
+}
+
+void TurnOffLights()
+{
+    digitalWrite(10, LOW);
+    digitalWrite(11, LOW);
+    digitalWrite(12, LOW);
+    digitalWrite(13, LOW);
 }

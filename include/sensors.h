@@ -3,6 +3,7 @@
 
 void ReadColorSensor(float* pointerRed, float* pointerGreen, float* pointerBlue);
 void PrintColor(float r, float g, float b);
-
+void TurnOffLights();
+void LineDetector ();
 
 #endif
