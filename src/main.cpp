@@ -5,7 +5,7 @@
 
 void testGP2Y0A21();
 int distRawToPhys(int raw);
-double Compute(double kp, double ki,double sp , double pv,double *lastime, double *errsum);
+double Compute(double kp, double ki,double *lastime, double *errsum);
 
 
 void setup() {
@@ -22,11 +22,12 @@ void loop() {
 
     while(1) 
     {
-        Serial.println(lastime);
-         Serial.println(errsum);
-        
-        MOTOR_SetSpeed(0,0.3);
-        MOTOR_SetSpeed(1,0.3+Compute(0.001,0.0005,ENCODER_Read(0),ENCODER_Read(1),&lastime,&errsum));
+        Serial.print("encoder 0=");
+        Serial.println(ENCODER_Read(0));
+        Serial.print("encoder 1=");
+        Serial.println(ENCODER_Read(1));
+        MOTOR_SetSpeed(0,0.3+Compute(0.001,0.00005,&lastime,&errsum));
+        MOTOR_SetSpeed(1,0.3);
     }
  }
  
@@ -39,18 +40,26 @@ void loop() {
 
 
 
-double Compute(double kp, double ki,double sp , double pv,double *lastime, double *errsum)
+double Compute(double kp, double ki,double *lastime, double *errsum)
 {  
     int sampletime = 100; 
     unsigned long now = millis();
     int timechange = now-*lastime;
     if (timechange>= sampletime) 
     {
-    double error = sp-pv;
+    double error = ENCODER_Read(1)-ENCODER_Read(0);
+    Serial.print("error=");
+    Serial.println(error);
+
+   
     *errsum+= error;
     double output = 0;
     output = (kp * error) + (ki* *errsum);
     *lastime= now;
+    if (*errsum>1000)
+    {
+        *errsum=0;
+    }
     
     return output;
     }
