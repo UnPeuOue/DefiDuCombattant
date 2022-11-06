@@ -29,3 +29,9 @@ float PulseToDistance (float pulse)
 {
     return (WHEEL_CIRCUMFERENCE/3200)*pulse;
 }
+
+
+float InchToCm (float distance)
+{
+    return distance *= 2.54;
+}
