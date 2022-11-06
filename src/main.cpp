@@ -9,24 +9,32 @@
 void setup() {
  	//Init Serial USB
 	BoardInit();
+	
  	Serial.begin(9600);
- 	Serial.println(F("Initialize System"));
+ 	 Serial.println(F("faudrait faire le PID bro"));
  	//Init ditance ir
- 	pinMode(A1, INPUT);
+ 	pinMode(A0, INPUT);
+	pinMode(13,OUTPUT);
+	pinMode(10,OUTPUT);
+	pinMode(11,OUTPUT);
+	pinMode(12,OUTPUT);
 	
 }
 void loop() {
-	float red=0;
-	float green=0;
-	float blue=0;
+ Serial.println(GetDistance(analogRead(A0)));
 
-ReadColorSensor(&red,&green,&blue);
-PrintColor(red,green,blue);
-if(GetDistance(analogRead(A1))>125)  RotateTwoWheels(176);
+if (ROBUS_IsBumper(3)) {
 
 
+if(GetDistance(analogRead(A0))>125) {
+	 RotateTwoWheels(176);
+} 
 
 
-delay(1000);
+
+
+
 	
+}
+
 }

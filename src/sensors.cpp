@@ -167,7 +167,7 @@ int GetDistance (int pin)
 	float Vout = float(pin) * 0.0048828125; // Conversion analog to voltage
 	int phys = 13 * pow(Vout, -1); // Conversion volt to distance
 
- 	Serial.println(int(InchToCm(phys)));
+ 	//Serial.println(int(InchToCm(phys)));
 	return int(InchToCm(phys));
 
 }
