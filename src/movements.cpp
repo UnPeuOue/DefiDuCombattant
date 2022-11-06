@@ -1,7 +1,12 @@
 #include <constants.h>
 #include <utils.h>
 #include <movements.h>
+//Description: la fonction regarde si le robot est bien orienté 
+void Orientation()
+{
+    
 
+}
 //Description: La fonction mets en arrêt le robot
 //Aucune entrée/sortie
 void Stop()
