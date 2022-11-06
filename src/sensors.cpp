@@ -2,7 +2,7 @@
 #include <sensors.h>
 #include "Adafruit_TCS34725.h"
 #include <Wire.h>
-#include "utils.h"
+#include <utils.h> 
 
 // Description : La fonction détecte une intensité de rouge, de vert et de bleu.
 // Préconditions : La fonction prend en arguments trois pointeurs vers rouge, vert et bleu.
@@ -161,7 +161,8 @@ void TurnOffLights()
     digitalWrite(13, LOW);
 }
 
-int GetDistance (int pin) {
+int GetDistance (int pin) 
+{
  	
 	float Vout = float(pin) * 0.0048828125; // Conversion analog to voltage
 	int phys = 13 * pow(Vout, -1); // Conversion volt to distance
