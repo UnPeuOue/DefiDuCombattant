@@ -26,7 +26,7 @@ void loop() {
         Serial.println(ENCODER_Read(0));
         Serial.print("encoder 1=");
         Serial.println(ENCODER_Read(1));
-        MOTOR_SetSpeed(0,0.3+Compute(0.001,0.00005,&lastime,&errsum));
+        MOTOR_SetSpeed(0,0.3+Compute(0.003,0.001,&lastime,&errsum));
         MOTOR_SetSpeed(1,0.3);
     }
  }
@@ -42,7 +42,7 @@ void loop() {
 
 double Compute(double kp, double ki,double *lastime, double *errsum)
 {  
-    int sampletime = 100; 
+    int sampletime = 200; 
     unsigned long now = millis();
     int timechange = now-*lastime;
     if (timechange>= sampletime) 
@@ -56,10 +56,7 @@ double Compute(double kp, double ki,double *lastime, double *errsum)
     double output = 0;
     output = (kp * error) + (ki* *errsum);
     *lastime= now;
-    if (*errsum>1000)
-    {
-        *errsum=0;
-    }
+    
     
     return output;
     }
