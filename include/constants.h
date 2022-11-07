@@ -15,10 +15,10 @@
 #define SPEED_LIMIT_ROTATE 0.3
 #define SPEED_LIMIT 0.6
 #define ACCEL_DECEL_distance 37.4
-#define RED 1
-#define YELLOW 2
-#define GREEN 3
-#define BLUE 4
+#define RED 4
+#define YELLOW 3
+#define GREEN 2
+#define BLUE 1
 
 
 

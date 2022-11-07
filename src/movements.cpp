@@ -142,4 +142,53 @@ void Acce(float desiredSpeed)
 }
 
 
+void RotateForward (int Color, float speedLeft)
+{
+    switch (Color)
+    {
+    case RED:
+
+        ENCODER_Reset(0); ENCODER_Reset(1);
+        MOTOR_SetSpeed(0, speedLeft);
+
+        float distance1 = RED*30.5-5.6; //Left
+        float distance2 = (RED-1)*30.5+5.6; //Right
+        int encoderMeasure =0;
+        
+
+        float speedRight = speedLeft*(distance2/distance1);
+        MOTOR_SetSpeed(1, speedRight);
+
+        float distance = distance1*PI*2;
+        distance *= 90;
+        distance /= 360;
+        distance = DistanceToPulse(distance);
+        while (encoderMeasure<distance){
+            encoderMeasure = ENCODER_Read(0);
+        }
+        Stop();
+        
+
+
+        break;
+    
+    case YELLOW:
+        /* code */
+        break;
+    
+    case GREEN:
+        /* code */
+        break;
+
+    case BLUE:
+        /* code */
+        break;
+
+    default:
+        break;
+    }
+
+    
+} 
+
 

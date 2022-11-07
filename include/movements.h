@@ -9,7 +9,7 @@ double Compute(double kp, double ki);
 void Forward(float distance);
 void Dece(float currentSpeed);
 void Acce(float desiredSpeed);
-
+void RotateForward (int Color, float speedLeft);
 
 
 #endif

@@ -14,21 +14,31 @@
 void setup() {
  	Serial.begin(9600);
     BoardInit();  
+    Stop();
+    
     
     // Set output for leds
-    pinMode(10, OUTPUT); 
+    /*pinMode(10, OUTPUT); 
     pinMode(11, OUTPUT); 
     pinMode(12, OUTPUT); 
     pinMode(13, OUTPUT); 
 
  	pinMode(A0, INPUT);
-    pinMode(A1, INPUT);
+    pinMode(A1, INPUT);*/
 }
 
 void loop() {
 //ROBUS_IsBumper(3)
-    if (1) { // DEVRA ÊTRE REMPLACÉ PAR LE SIFFLET
+    MOTOR_SetSpeed(0,0);
+    MOTOR_SetSpeed(1,0);
+    if (ROBUS_IsBumper(3)) { // DEVRA ÊTRE REMPLACÉ PAR LE SIFFLET
         int distance1 = 0, distance2=0;
+        
+        
+        RotateForward(RED, 0.4);
+        
+        Stop();
+        /*
         while(1)
         {
             int pin1 = analogRead(A0);
@@ -70,7 +80,7 @@ void loop() {
             default:
             break;
 
-        }
+        }*/
         
 
         
