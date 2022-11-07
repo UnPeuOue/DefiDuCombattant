@@ -1,13 +1,14 @@
 #include <constants.h>
 #include <sensors.h>
+#include <sensors.h>
 #include "Adafruit_TCS34725.h"
 #include <Wire.h>
-#include <utils.h> 
+#include <utils.h>
 
 // Description : La fonction détecte une intensité de rouge, de vert et de bleu.
 // Préconditions : La fonction prend en arguments trois pointeurs vers rouge, vert et bleu.
 // Postconditions : Aucun retour.
-void ReadColorSensor(float* pointerRed, float* pointerGreen, float* pointerBlue)
+void ReadColor(float* pointerRed, float* pointerGreen, float* pointerBlue)
 {    
     Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
     
@@ -35,41 +36,38 @@ void ReadColorSensor(float* pointerRed, float* pointerGreen, float* pointerBlue)
 }
 
 
-
-int PrintColor(float r, float g, float b)
+// Description : La fonction allume une del et suit indique la couleur en question
+// Préconditions : La fonction prend en arguments trois valeur de rouge, vert et bleu.
+// Postconditions : La fonction retour 1: rouge, 2: jaune, 3: vert ou 4: bleu.
+int TurnOnLight(float r, float g, float b)
 {
 
     if (r>(2.5*b) && r>(2.5*g))
     {
         TurnOffLights();
         digitalWrite(13, HIGH);
-        Serial.println("Rouge\n");
-        return 1;
+        return RED;
     }
   
     if (r>(2.5*b) && r<(2.5*g))
     {
         TurnOffLights();
         digitalWrite(12, HIGH);
-        Serial.println("Jaune\n");
-        return 2;
+        return YELLOW;
     }
   
     if (g>r && g>b)
     {
         TurnOffLights();
         digitalWrite(10, HIGH);
-        Serial.println("Vert\n");
-        return 3;
+        return GREEN;
     }
     if (b>r && b>g)
     {
         TurnOffLights();
         digitalWrite(11, HIGH);
-        Serial.println("Bleu\n");
-        return 4;
+        return BLUE;
     }
-    return 0;
 }
 
 void LineDetector ()
@@ -86,6 +84,8 @@ void LineDetector ()
   {
     int sensorValue = analogRead(A7);
     float voltage = sensorValue * (5.0 / 1023.0);
+    Serial.println(voltage);
+    
 
     if ((1.9 < voltage) && (voltage < 2.1))
     {
@@ -161,13 +161,12 @@ void TurnOffLights()
     digitalWrite(13, LOW);
 }
 
-int GetDistance (int pin) 
-{
+// Besoin de regle
+int GetDistance (int pin) {
  	
 	float Vout = float(pin) * 0.0048828125; // Conversion analog to voltage
 	int phys = 13 * pow(Vout, -1); // Conversion volt to distance
-
- 	//Serial.println(int(InchToCm(phys)));
-	return int(InchToCm(phys));
-
+    
+	return phys;
+    
 }
