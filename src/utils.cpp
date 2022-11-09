@@ -33,5 +33,5 @@ float PulseToDistance (float pulse)
 
 float InchToCm (float distance)
 {
-    return distance *= 2.54;
+    return distance * 2.54;
 }

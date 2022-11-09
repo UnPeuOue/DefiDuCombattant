@@ -84,7 +84,7 @@ void Forward(float distance)
     ENCODER_ReadReset(1);
     //unsigned long lastTime = 0;
     //unsigned long * pointLastTime = &lastTime;
-    Acce(SPEED_LIMIT);
+    //Acce(SPEED_LIMIT);
     double errorSums = 0;
     while (ENCODER_Read(0)<= distance)
     {
@@ -96,7 +96,8 @@ void Forward(float distance)
         MOTOR_SetSpeed(0,SPEED_LIMIT);
         MOTOR_SetSpeed(1,SPEED_LIMIT+errorcorrected);
     }
-    Dece(SPEED_LIMIT);
+    //Dece(SPEED_LIMIT);
+    Stop();
 
 }
 
@@ -144,6 +145,19 @@ void Acce(float desiredSpeed)
 
 void RotateForward (int Color, float speedLeft)
 {
+
+    float distance1 = 0;
+    float distance2 = 0;
+    int encoderMeasure =0;
+    
+        
+    float speedRight = 0;
+    float distance = 0;
+
+    double lastime=0;
+    double errsum=0;
+    float fraction=0; //POUR LE PID
+
     switch (Color)
     {
     case RED:
@@ -151,15 +165,16 @@ void RotateForward (int Color, float speedLeft)
         ENCODER_Reset(0); ENCODER_Reset(1);
         MOTOR_SetSpeed(0, speedLeft);
 
-        float distance1 = RED*30.5-5.6; //Left
-        float distance2 = (RED-1)*30.5+5.6; //Right
-        int encoderMeasure =0;
+         distance1 = RED*30.5-5.6; //Left
+         distance2 = (RED-1)*30.5+5.6; //Right
+         encoderMeasure =0;
         
 
-        float speedRight = speedLeft*(distance2/distance1);
-        MOTOR_SetSpeed(1, speedRight);
+         speedRight = speedLeft*(distance2/distance1);
+         fraction = distance2/distance1;
+        MOTOR_SetSpeed(1, speedRight+Compute1(0.003,0.001,&lastime,&errsum, fraction)); //PID
 
-        float distance = distance1*PI*2;
+         distance = distance1*PI*2;
         distance *= 90;
         distance /= 360;
         distance = DistanceToPulse(distance);
@@ -173,15 +188,79 @@ void RotateForward (int Color, float speedLeft)
         break;
     
     case YELLOW:
-        /* code */
+        
+        ENCODER_Reset(0); ENCODER_Reset(1);
+        MOTOR_SetSpeed(0, speedLeft);
+
+         distance1 = YELLOW*30.5-5.6; //Left
+         distance2 = (YELLOW-1)*30.5+5.6; //Right
+         encoderMeasure =0;
+        
+
+         speedRight = speedLeft*(distance2/distance1);
+        MOTOR_SetSpeed(1, speedRight); //PID
+
+         distance = distance1*PI*2;
+        distance *= 90;
+        distance /= 360;
+        distance = DistanceToPulse(distance);
+        while (encoderMeasure<distance){
+            encoderMeasure = ENCODER_Read(0);
+        }
+        Stop();
+
         break;
     
     case GREEN:
-        /* code */
+        
+        ENCODER_Reset(0); ENCODER_Reset(1);
+        MOTOR_SetSpeed(0, speedLeft);
+
+         distance1 = GREEN*30.5-5.6; //Left
+         distance2 = (GREEN-1)*30.5+5.6; //Right
+         encoderMeasure =0;
+        
+
+         speedRight = speedLeft*(distance2/distance1);
+        MOTOR_SetSpeed(1, speedRight); //PID
+
+         distance = distance1*PI*2;
+        distance *= 90;
+        distance /= 360;
+        distance = DistanceToPulse(distance);
+        while (encoderMeasure<distance){
+            encoderMeasure = ENCODER_Read(0);
+        }
+        Stop();
+        
+        
         break;
 
     case BLUE:
-        /* code */
+        
+        
+        ENCODER_Reset(0); ENCODER_Reset(1);
+        MOTOR_SetSpeed(0, speedLeft);
+
+         distance1 = BLUE*30.5-5.6; //Left
+         distance2 = (BLUE-1)*30.5+5.6; //Right
+         encoderMeasure =0;
+        
+
+         speedRight = speedLeft*(distance2/distance1);
+        MOTOR_SetSpeed(1, speedRight); //PID
+
+         distance = distance1*PI*2;
+        distance *= 90;
+        distance /= 360;
+        distance = DistanceToPulse(distance);
+        while (encoderMeasure<distance){
+            encoderMeasure = ENCODER_Read(0);
+        }
+        Stop();
+        
+        
+        
         break;
 
     default:
@@ -192,3 +271,25 @@ void RotateForward (int Color, float speedLeft)
 } 
 
 
+double Compute1(double kp, double ki,double *lastime, double *errsum, float fraction)
+{  
+    int sampletime = 200; 
+    unsigned long now = millis();
+    int timechange = now-*lastime;
+    if (timechange>= sampletime) 
+    {
+    double error = ENCODER_Read(1)-fraction*ENCODER_Read(0);
+    Serial.print("error=");
+    Serial.println(error);
+
+   
+    *errsum+= error;
+    double output = 0;
+    output = (kp * error) + (ki* *errsum);
+    *lastime= now;
+    
+    
+    return output;
+    }
+ return 0;
+}

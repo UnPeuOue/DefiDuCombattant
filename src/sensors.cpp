@@ -100,6 +100,7 @@ void LineDetector ()
             MOTOR_SetSpeed(0, i);
             MOTOR_SetSpeed(1, i);
         }
+        ENCODER_Reset(0); ENCODER_Reset(1);
     }
     else if ((0.5 < voltage) && (voltage < 0.8))
     {
@@ -114,6 +115,7 @@ void LineDetector ()
             MOTOR_SetSpeed(0, i);
             MOTOR_SetSpeed(1, i);
         }
+        ENCODER_Reset(0); ENCODER_Reset(1);
     }
     else if ((3.9 < voltage) && (voltage < 4.1))
     {
@@ -128,6 +130,7 @@ void LineDetector ()
             MOTOR_SetSpeed(0, i);
             MOTOR_SetSpeed(1, i);
         }
+        ENCODER_Reset(0); ENCODER_Reset(1);
     }
     else if ((2.5 < voltage) && (voltage < 2.8))
     {
@@ -142,6 +145,7 @@ void LineDetector ()
             MOTOR_SetSpeed(0, i);
             MOTOR_SetSpeed(1, i);
         }
+        ENCODER_Reset(0); ENCODER_Reset(1);
     }
     else
     {
@@ -161,12 +165,12 @@ void TurnOffLights()
     digitalWrite(13, LOW);
 }
 
-// Besoin de regle
-int GetDistance (int pin) {
- 	
-	float Vout = float(pin) * 0.0048828125; // Conversion analog to voltage
-	int phys = 13 * pow(Vout, -1); // Conversion volt to distance
+
+
+
+void DetectDistance ()
+{
     
-	return phys;
-    
+
+
 }
