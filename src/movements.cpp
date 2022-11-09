@@ -179,6 +179,7 @@ void RotateForward (int Color, float speedLeft)
         distance /= 360;
         distance = DistanceToPulse(distance);
         while (encoderMeasure<distance){
+            MOTOR_SetSpeed(1, speedRight+Compute1(0.003,0.001,&lastime,&errsum, fraction));
             encoderMeasure = ENCODER_Read(0);
         }
         Stop();
