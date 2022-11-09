@@ -35,6 +35,16 @@ void ReadColor(float* pointerRed, float* pointerGreen, float* pointerBlue)
 
 }
 
+int PrintColor(float r, float g, float b)
+{
+    if (r>(2.5*b) && r>(2.5*g)) return RED;
+    if (r>(2.5*b) && r<(2.5*g)) return YELLOW;
+    if (g>r && g>b) return GREEN;
+    if (b>r && b>g) return BLUE;
+}
+
+
+
 
 // Description : La fonction allume une del et suit indique la couleur en question
 // Préconditions : La fonction prend en arguments trois valeur de rouge, vert et bleu.
