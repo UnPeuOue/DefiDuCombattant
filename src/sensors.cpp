@@ -37,10 +37,24 @@ void ReadColor(float* pointerRed, float* pointerGreen, float* pointerBlue)
 
 int PrintColor(float r, float g, float b)
 {
+    
+
+    if(g>80&&g<88)
+    {
+        if(b>53&&b<57)
+        {
+            if(r>100&&r<106)
+            {
+                return 0;
+            }
+        }    
+    }
+    
     if (r>(2.5*b) && r>(2.5*g)) return RED;
     if (r>(2.5*b) && r<(2.5*g)) return YELLOW;
     if (g>r && g>b) return GREEN;
     if (b>r && b>g) return BLUE;
+    else return -1; //gris
 }
 
 

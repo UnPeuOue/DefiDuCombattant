@@ -31,7 +31,69 @@ void setup() {
 
 void loop() {
 
+    float red, green, blue=0;
+    int value1=0;
+    int value2=0;
+    /*while(1)
+    {
+        value1 = ROBUS_ReadIR(1);
+        value2 = ROBUS_ReadIR(2);
+        Serial.print("1 : ");
+        Serial.println(value1);
+        Serial.print("2 : ");
+        Serial.println(value2);
+        delay(1000);
+    }
+    */
+
+
+   
+
+
+    while(1)
+
+    {
+        ReadColor(&red, &green, &blue);
+        switch (PrintColor(red, green, blue))
+        {
+        case 0:
+            TurnOffLights();
+            Serial.println("Blanc");
+            break;
+        case 1: 
+            TurnOnLight(red, green, blue);
+            Serial.println("Bleu");
+            break;
+        case 2:
+            TurnOnLight(red, green, blue);
+            Serial.println("Green");
+            break;
+        case 3:
+            TurnOnLight(red, green, blue);
+            Serial.println("Yellow");
+            break;
+        case 4:
+            TurnOnLight(red, green, blue);
+            Serial.println("Red");
+            break;
+
+        default:
+         Serial.println("gris");
+            break;
+        }
+
+        delay(10);
+
+
+
+    }
+
     
+    
+
+
+
+
 
 
     if(ROBUS_IsBumper(3)){
@@ -59,17 +121,43 @@ void loop() {
         float red=0, green=0, blue=0;
         ReadColor(&red, &green, &blue);
         color = TurnOnLight(red, green, blue);
+        float i=0.2;
         
         
         switch (color){
-            case RED:
-            RotateForward(RED, 0.4);
-            
-            success = 0;
-            break;
 
             case YELLOW:
-            RotateForward(YELLOW, 0.4);
+            
+            MOTOR_SetSpeed(0, 0.2); MOTOR_SetSpeed(1, i);
+
+            while(1)
+            {
+                ReadColor(&red, &green, &blue);
+                color = TurnOnLight(red, green, blue);
+
+                switch (color)
+                {
+                    case RED:
+                    i -=0.01;
+                    break;
+                    case GREEN:
+                    i += 0.01;
+                    break;
+                    default:
+                    i=0.2;
+                    break;
+                    delay(100);
+                }
+
+            }
+
+
+
+
+
+
+
+
             success = 0;
             break;
             
@@ -78,15 +166,21 @@ void loop() {
             success = 0;
             break;
             
-            case BLUE:
-            RotateForward(BLUE, 0.4);
-            success = 0;
-            break;
-            
             default:
             break;
         }
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         Stop();
         
         Forward(InchToCm(2*12));
