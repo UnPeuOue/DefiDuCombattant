@@ -41,6 +41,7 @@ int PrintColor(float r, float g, float b)
     if (r>(2.5*b) && r<(2.5*g)) return YELLOW;
     if (g>r && g>b) return GREEN;
     if (b>r && b>g) return BLUE;
+    return 5 ;
 }
 
 

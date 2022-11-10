@@ -143,7 +143,7 @@ void Acce(float desiredSpeed)
 }
 
 
-void RotateForward (int Color, float speedLeft)
+void RotateForwardhardcoded (int Color, float speedLeft)
 {
 
     float distance1 = 0;
@@ -279,7 +279,7 @@ double Compute1(double kp, double ki,double *lastime, double *errsum, float frac
     int timechange = now-*lastime;
     if (timechange>= sampletime) 
     {
-    double error = ENCODER_Read(1)-fraction*ENCODER_Read(0);
+    double error = ENCODER_Read(1)-(fraction*ENCODER_Read(0));
     Serial.print("error=");
     Serial.println(error);
 
@@ -294,3 +294,66 @@ double Compute1(double kp, double ki,double *lastime, double *errsum, float frac
     }
  return 0;
 }
+
+void RotateForward(int Color, float speedLeft)
+{
+
+float speedRight=speedLeft;
+int currentcolor= 100;
+float red=0;
+float green=0;
+float blue=0;
+double errsum=0;
+double lastime=0;
+MOTOR_SetSpeed(1,speedLeft);
+while(currentcolor!=0) 
+{
+    
+
+ switch (Color) 
+    {
+       
+        case YELLOW : 
+         Serial.println(currentcolor);
+        ReadColor(&red,&green,&blue);
+
+        currentcolor=PrintColor(red,green,blue);
+        
+
+        if (currentcolor==RED) 
+        {
+            MOTOR_SetSpeed(0,speedLeft+speedIteration);
+
+            
+        }
+
+        if(currentcolor==GREEN) 
+        {
+            MOTOR_SetSpeed(0,speedLeft-speedIteration);
+        }
+
+        else
+        {
+            MOTOR_SetSpeed(0,speedRight);
+            MOTOR_SetSpeed(1,speedLeft+0.02);
+        
+        }
+        break;
+
+        //default: 
+        //MOTOR_SetSpeed(0,0);
+      
+        //MOTOR_SetSpeed(1,0);
+        //break;
+     }
+
+
+
+    }
+}
+
+
+
+
+
+

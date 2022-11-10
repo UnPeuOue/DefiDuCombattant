@@ -30,19 +30,30 @@ void setup() {
 }
 
 void loop() {
-
+    float red=0,green=0,blue=0;
+    int color=0;
+    float speed_left=0.35;
     
 
 
     if(ROBUS_IsBumper(3)){
+    MOTOR_SetSpeed(0,0.35);
+    double lastime=0;
+    double errsum=0;
     float signal = 0;
+    ReadColor(&red,&green,&blue);
+    color=PrintColor(red,green,blue);
+    TurnOnLight(red,green,blue);
     signal = analogRead(A2);
     float voltage = signal * (5.0 / 1023.0);
     
-    voltage =2; //Temporaire
-    
+    voltage =3; //Temporaire
+    while (1)
     if (voltage>1.7) {
 
+        RotateForward(color,speed_left);
+     
+      //MOTOR_SetSpeed(1, 0.35+Compute1(0.003,0.001,&lastime,&errsum,1));
 
         //int distance1 = 0, distance2=0;
         
@@ -53,145 +64,8 @@ void loop() {
         
 
         //Détection de la couleur
-        int success = 1;
-        int color = 0;
-        while (success){
-        float red=0, green=0, blue=0;
-        ReadColor(&red, &green, &blue);
-        color = TurnOnLight(red, green, blue);
-        
-        
-        switch (color){
-            case RED:
-            RotateForward(RED, 0.4);
-            
-            success = 0;
-            break;
-
-            case YELLOW:
-            RotateForward(YELLOW, 0.4);
-            success = 0;
-            break;
-            
-            case GREEN:
-            RotateForward(GREEN, 0.4);
-            success = 0;
-            break;
-            
-            case BLUE:
-            RotateForward(BLUE, 0.4);
-            success = 0;
-            break;
-            
-            default:
-            break;
-        }
-        }
-        Stop();
-        
-        Forward(InchToCm(2*12));
-
-        switch (color){
-            case RED:
-            RotateForward(RED, 0.4);
-            
-            success = 0;
-            break;
-
-            case YELLOW:
-            RotateForward(YELLOW, 0.4);
-            success = 0;
-            break;
-            
-            case GREEN:
-            RotateForward(GREEN, 0.4);
-            success = 0;
-            break;
-            
-            case BLUE:
-            RotateForward(BLUE, 0.4);
-            success = 0;
-            break;
-            
-            default:
-            break;
-        }
-        
-        Stop();
-
-
-        Forward(InchToCm(8*12));
-
-
-        if (color == RED) Rotate(90, 0);
-
-
-        LineDetector(); //Bouble infinie
-
-        double errorSums = 0;
-        while (ENCODER_Read(0) < DistanceToPulse(InchToCm(8*12)))
-        {
-            int32_t wheelOne = ENCODER_Read(0);
-            int32_t wheelTwo = ENCODER_Read(1);
-            int32_t errorRange = abs(wheelOne) - abs(wheelTwo);
-            errorSums += errorRange;
-            double errorcorrected = (0.01 * errorRange);
-            MOTOR_SetSpeed(0,SPEED_LIMIT);
-            MOTOR_SetSpeed(1,SPEED_LIMIT+errorcorrected);
-        }
-        Stop();
-
-        RotateForward(BLUE, 0.4);
-
-
-        switch (color)
-        {
-            case RED:
-            Forward(DistanceToPulse(91.5));
-            break;
-            
-            case YELLOW:
-            Forward(DistanceToPulse(61));
-            break;
-
-            case GREEN:
-            Forward(DistanceToPulse(30.5));
-            break;
-        
-            default:
-            break;
-        }
-
-        Forward(InchToCm(2*12));
-
-        RotateForward(BLUE, 0.4);
-
-
-
-
-
-
-
-
-
-
-        
-        
-        
-        
-        //Forward(InchToCm(8));
-
-        
-
-
-
-        
-
-
-        //int pin = analogRead(A0);
-        //int distance = GetDistance (pin);
-        //Serial.println(distance);
-        
+       
+       
         
     }
     }
