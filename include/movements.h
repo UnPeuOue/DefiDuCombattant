@@ -12,6 +12,7 @@ void Acce(float desiredSpeed);
 void RotateForwardhardcoded (int Color, float speedLeft);
 double Compute1(double kp, double ki,double *lastime, double *errsum, float fraction);
 void RotateForward(int Color, float speedleft);
+void Tourner (int sens);
 
 
 #endif

@@ -19,8 +19,7 @@
 #define YELLOW 3
 #define GREEN 2
 #define BLUE 1
-#define speedIteration 0.2
-
+#define speedIteration 0.25
 
 
 

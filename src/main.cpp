@@ -5,9 +5,10 @@
 #include "sensors.h"
 #include "movements.h"
 #include "utils.h"
+#include "SharpIR.h"
 
 
-
+SharpIR mySensor = SharpIR(A0, 1080);
 
 
 
@@ -25,33 +26,72 @@ void setup() {
     
     //Signal
     pinMode(A2, INPUT);
+    pinMode(A7,INPUT);
+    pinMode(A1,INPUT);
 
  	
 }
 
 void loop() {
-    float red=0,green=0,blue=0;
-    int color=0;
-    float speed_left=0.35;
     
+    /*while(1)
+    {
+        value1 = ROBUS_ReadIR(1);
+        value2 = ROBUS_ReadIR(2);
+        Serial.print("1 : ");
+        Serial.println(value1);
+        Serial.print("2 : ");
+        Serial.println(value2);
+        delay(1000);
+    }
+    */
+
+    /*while(1)
+{
+    ReadColor(&red, &green, &blue);
+    Serial.print("Red : ");
+    Serial.println(red);
+    Serial.print("Green : ");
+    Serial.println(green);
+    Serial.print("Blue : ");
+    Serial.println(blue);
+    delay(1000);
+}*/
+
+
+
+
+   
+    
+    
+
+
+
+
 
 
     if(ROBUS_IsBumper(3)){
-    MOTOR_SetSpeed(0,0.35);
-    double lastime=0;
-    double errsum=0;
+    
+    
+   float speedLeft=0.4;
+    float red=0,green=0,blue=0;
     float signal = 0;
     ReadColor(&red,&green,&blue);
-    color=PrintColor(red,green,blue);
+    int color=PrintColor(red,green,blue);
     TurnOnLight(red,green,blue);
+ 
+    
+    
+    while (1) {
     signal = analogRead(A2);
     float voltage = signal * (5.0 / 1023.0);
-    
-    voltage =3; //Temporaire
-    while (1)
-    if (voltage>1.7) {
+    Serial.println(voltage);
+    if (voltage>2.5) {
 
-        RotateForward(color,speed_left);
+        RotateStart();
+        RotateForward(color,speedLeft);
+        LineDetector();
+
      
       //MOTOR_SetSpeed(1, 0.35+Compute1(0.003,0.001,&lastime,&errsum,1));
 
@@ -61,13 +101,8 @@ void loop() {
         //Serial.println(ROBUS_ReadIR(2));
         
 
-        
+    }
 
-        //Détection de la couleur
-       
-       
-        
-    }
-    }
 }
-
+}
+}

@@ -309,12 +309,12 @@ MOTOR_SetSpeed(1,speedLeft);
 while(currentcolor!=0) 
 {
     
-
+    Serial.println(currentcolor);
  switch (Color) 
     {
        
         case YELLOW : 
-         Serial.println(currentcolor);
+         
         ReadColor(&red,&green,&blue);
 
         currentcolor=PrintColor(red,green,blue);
@@ -323,13 +323,15 @@ while(currentcolor!=0)
         if (currentcolor==RED) 
         {
             MOTOR_SetSpeed(0,speedLeft+speedIteration);
+            
 
             
         }
 
-        if(currentcolor==GREEN) 
+        else if(currentcolor==YELLOW) 
         {
             MOTOR_SetSpeed(0,speedLeft-speedIteration);
+
         }
 
         else
@@ -345,10 +347,67 @@ while(currentcolor!=0)
       
         //MOTOR_SetSpeed(1,0);
         //break;
-     }
+     
+
+    case GREEN: 
+     ReadColor(&red,&green,&blue);
+
+        currentcolor=PrintColor(red,green,blue);
+        
+
+        if (currentcolor==GREEN) 
+        {
+            MOTOR_SetSpeed(0,speedLeft+speedIteration);
+            
+
+            
+        }
+
+        else if(currentcolor==BLUE) 
+        {
+            MOTOR_SetSpeed(0,speedLeft-speedIteration);
+
+        }
+
+        else
+        {
+            MOTOR_SetSpeed(0,speedRight);
+            MOTOR_SetSpeed(1,speedLeft+0.02);
+        
+        }
+        break;
+    
+    case BLUE: 
+     ReadColor(&red,&green,&blue);
+
+        currentcolor=PrintColor(red,green,blue);
+        
+
+        if (currentcolor==GREEN) 
+        {
+            MOTOR_SetSpeed(0,speedLeft+speedIteration);
+            
+
+            
+        }
+
+        else if(currentcolor==BLUE) 
+        {
+            MOTOR_SetSpeed(0,speedLeft-speedIteration);
+
+        }
+
+        else
+        {
+            MOTOR_SetSpeed(0,speedRight);
+            MOTOR_SetSpeed(1,speedLeft+0.02);
+        
+        }
+        break;
 
 
-
+    
+    }
     }
 }
 
@@ -357,3 +416,25 @@ while(currentcolor!=0)
 
 
 
+
+void Tourner (int sens)
+{
+    switch (sens)
+    {
+    case 0:
+        Rotate(45, 0); //Droite
+        break;
+    case 1:
+        Rotate(45, 1); //Droite
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void Avancer (int sens)
+{
+    
+
+}

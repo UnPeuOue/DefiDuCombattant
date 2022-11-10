@@ -4,6 +4,8 @@
 #include "Adafruit_TCS34725.h"
 #include <Wire.h>
 #include <utils.h>
+#include "movements.h"
+#include "SharpIR.h"
 
 // Description : La fonction détecte une intensité de rouge, de vert et de bleu.
 // Préconditions : La fonction prend en arguments trois pointeurs vers rouge, vert et bleu.
@@ -37,11 +39,27 @@ void ReadColor(float* pointerRed, float* pointerGreen, float* pointerBlue)
 
 int PrintColor(float r, float g, float b)
 {
-    if (r>(2.5*b) && r>(2.5*g)) return RED;
-    if (r>(2.5*b) && r<(2.5*g)) return YELLOW;
+    
+    // Blabc
+    if(g>80&&g<88)
+    {
+        if(b>53&&b<57)
+        {
+            if(r>100&&r<106)
+            {
+                return 0;
+            }
+        }    
+    }
+    if (r>131) return RED;
+
+    if (r>120 && r<124&&g>77) return YELLOW;
+    
+    //if (r>(2.5*b) && r>(2.5*g)) return RED;
+    //if (r>(2*b) && r<(2.5*g)) return YELLOW;
     if (g>r && g>b) return GREEN;
-    if (b>r && b>g) return BLUE;
-    return 5 ;
+    if (b>95) return BLUE;
+    else return -1; //gris
 }
 
 
@@ -83,19 +101,24 @@ int TurnOnLight(float r, float g, float b)
 
 void LineDetector ()
 {
-    float i = 0.2;
+    float i = 0.15;
   MOTOR_SetSpeed(0, i);
   MOTOR_SetSpeed(1, i);
   int j=-1, k=-1;
-
-  int CONDITION=1;
+  float red=0,green=0,blue=0;
+  int currentcolor=0;
   
   
-  while(CONDITION)
+  while(currentcolor==0|| currentcolor==RED ||currentcolor==-1)
   {
+    ReadColor(&red,&green,&blue);
+    currentcolor= PrintColor(red,green,blue);
+    Serial.println(currentcolor);
     int sensorValue = analogRead(A7);
     float voltage = sensorValue * (5.0 / 1023.0);
-    Serial.println(voltage);
+    voltage/=4.85;
+    voltage*=4.66;
+    Serial.println(currentcolor);
     
 
     if ((1.9 < voltage) && (voltage < 2.1))
@@ -165,7 +188,12 @@ void LineDetector ()
     }
     k=-1;
     j=-1;
+  if (currentcolor==RED) 
+  {
+    Rotate(20,0);
   }
+  }
+ 
 }
 
 void TurnOffLights()
@@ -179,9 +207,76 @@ void TurnOffLights()
 
 
 
-void DetectDistance ()
+void RotateStart()
 {
-    
+    float red=0, green=0, blue=0;
+    ReadColor(&red, &green, &blue);
+    float output=0;
+    int color = TurnOnLight(red, green, blue);
+    SharpIR mySensor = SharpIR(A1, 1080);
+     
+        
+        switch (color)
+        {
+            
+            case    YELLOW:
+            
+            while (mySensor.distance()>88 || mySensor.distance()<50)
+            {
+              
+                Serial.println(mySensor.distance());
+                
+                    RotateTwoWheels(30);
+                    delay(1500);
+                
+                
+            }
+        RotateTwoWheels(178);
+        break;
 
+        case GREEN:
+        while (mySensor.distance()>50 || mySensor.distance()<30)
+            {
+              
+                Serial.println(mySensor.distance());
+                
+                    RotateTwoWheels(30);
+                    delay(1500);
+                
+                
+            }
+        RotateTwoWheels(178);
+        break;
+
+
+        case BLUE:
+        while (mySensor.distance()>12 || mySensor.distance()<8)
+            {
+              
+                Serial.println(mySensor.distance());
+                
+                    RotateTwoWheels(30);
+                    delay(1500);
+                
+                
+            }
+        RotateTwoWheels(178);
+        break;
+
+        }
+}
+
+void ReadIR () 
+{
+    SharpIR mySensor = SharpIR(A1, 1080);
+    while(1)
+    {
+    float distance_cm = mySensor.distance();
+    Serial.print("Mean distance: ");
+    Serial.print(distance_cm);
+    Serial.println(" cm");
+
+  delay(1000);
+    }
 
 }
