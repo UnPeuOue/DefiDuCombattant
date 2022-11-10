@@ -46,8 +46,19 @@ void loop() {
     }
     */
 
+    /*while(1)
+{
+    ReadColor(&red, &green, &blue);
+    Serial.print("Red : ");
+    Serial.println(red);
+    Serial.print("Green : ");
+    Serial.println(green);
+    Serial.print("Blue : ");
+    Serial.println(blue);
+    delay(1000);
+}*/
 
-   
+
 
 
     while(1)
@@ -128,31 +139,13 @@ void loop() {
 
             case YELLOW:
             
-            MOTOR_SetSpeed(0, 0.2); MOTOR_SetSpeed(1, i);
-
-            while(1)
+            while (1)
             {
                 ReadColor(&red, &green, &blue);
-                color = TurnOnLight(red, green, blue);
 
-                switch (color)
-                {
-                    case RED:
-                    i -=0.01;
-                    break;
-                    case GREEN:
-                    i += 0.01;
-                    break;
-                    default:
-                    i=0.2;
-                    break;
-                    delay(100);
-                }
+                //if ()
 
             }
-
-
-
 
 
 

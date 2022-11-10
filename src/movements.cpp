@@ -294,3 +294,26 @@ double Compute1(double kp, double ki,double *lastime, double *errsum, float frac
     }
  return 0;
 }
+
+
+void Tourner (int sens)
+{
+    switch (sens)
+    {
+    case 0:
+        Rotate(45, 0); //Droite
+        break;
+    case 1:
+        Rotate(45, 1); //Droite
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void Avancer (int sens)
+{
+    
+
+}
